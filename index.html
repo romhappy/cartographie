@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Structures et Services Sociaux et Médico-Sociaux</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(45deg, #2c3e50, #34495e);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .menu-section {
+            padding: 30px;
+        }
+
+        .domain-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .domain-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .domain-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+
+        .domain-header {
+            padding: 20px;
+            font-weight: bold;
+            font-size: 1.3rem;
+            color: white;
+            text-align: center;
+            position: relative;
+        }
+
+        .handicap { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+        .protection { background: linear-gradient(135deg, #3498db, #2980b9); }
+        .insertion { background: linear-gradient(135deg, #27ae60, #229954); }
+
+        .dropdown-container {
+            padding: 20px;
+        }
+
+        .dropdown {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .dropdown-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 0.95rem;
+        }
+
+        .dropdown-select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e6ed;
+            border-radius: 8px;
+            font-size: 1rem;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 12px center;
+            background-repeat: no-repeat;
+            background-size: 16px;
+            padding-right: 40px;
+        }
+
+        .dropdown-select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .dropdown-select:hover {
+            border-color: #667eea;
+        }
+
+        .result-section {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f8f9fd;
+            border-radius: 8px;
+            min-height: 100px;
+            border-left: 4px solid #667eea;
+        }
+
+        .result-content {
+            display: none;
+        }
+
+        .result-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .structure-item {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .structure-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .structure-name {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+
+        .structure-description {
+            color: #5a6c7d;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .hebergement-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-top: 8px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .age-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-top: 8px;
+            margin-right: 5px;
+        }
+
+        .eam-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, #9b59b6, #8e44ad);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-top: 8px;
+            margin-right: 5px;
+        }
+
+        .eanm-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-top: 8px;
+            margin-right: 5px;
+        }
+
+        .medicalise-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-top: 8px;
+            margin-right: 5px;
+        }
+
+        .enfant { background: linear-gradient(45deg, #74b9ff, #0984e3); color: white; }
+        .adulte { background: linear-gradient(45deg, #fdcb6e, #e17055); color: white; }
+
+        .filter-bar {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .filter-button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .filter-button:hover, .filter-button.active {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .no-result {
+            text-align: center;
+            color: #7f8c8d;
+            font-style: italic;
+            padding: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .domain-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .filter-bar {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Structures et Services Sociaux et Médico-Sociaux</h1>
+            <p class="subtitle">Guide des établissements par domaine, secteur et type d'hébergement</p>
+        </header>
+
+        <div class="menu-section">
+            <div class="domain-grid">
+                <!-- Handicap -->
+                <div class="domain-card">
+                    <div class="domain-header handicap">
+                        🦽 HANDICAP
+                    </div>
+                    <div class="dropdown-container">
+                        <div class="dropdown">
+                            <label class="dropdown-label">Secteur :</label>
+                            <select class="dropdown-select" onchange="updateStructures('handicap', this.value)">
+                                <option value="">-- Sélectionner un secteur --</option>
+                                <option value="enfant">Enfant</option>
+                                <option value="adulte">Adulte</option>
+                                <option value="santemantale">Santé Mentale</option>
+                                <option value="addictologie">Addictologie</option>
+                            </select>
+                        </div>
+                        <div class="result-section">
+                            <div id="handicap-results" class="result-content"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Protection de l'enfance -->
+                <div class="domain-card">
+                    <div class="domain-header protection">
+                        🛡️ PROTECTION DE L'ENFANCE
+                    </div>
+                    <div class="dropdown-container">
+                        <div class="dropdown">
+                            <label class="dropdown-label">Type de service :</label>
+                            <select class="dropdown-select" onchange="updateStructures('protection', this.value)">
+                                <option value="">-- Sélectionner un service --</option>
+                                <option value="prevention">Prévention</option>
+                                <option value="placement">Placement</option>
+                                <option value="accompagnement">Accompagnement</option>
+                            </select>
+                        </div>
+                        <div class="result-section">
+                            <div id="protection-results" class="result-content"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Insertion -->
+                <div class="domain-card">
+                    <div class="domain-header insertion">
+                        🎯 INSERTION
+                    </div>
+                    <div class="dropdown-container">
+                        <div class="dropdown">
+                            <label class="dropdown-label">Secteur :</label>
+                            <select class="dropdown-select" onchange="updateStructures('insertion', this.value)">
+                                <option value="">-- Sélectionner un secteur --</option>
+                                <option value="enfant">Jeunes (16-25 ans)</option>
+                                <option value="adulte">Adultes</option>
+                            </select>
+                        </div>
+                        <div class="result-section">
+                            <div id="insertion-results" class="result-content"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Base de données des structures
+        const structures = {
+            handicap: {
+                enfant: [
+                    { name: "IME - Institut Médico-Éducatif", description: "Accueil d'enfants et adolescents déficients intellectuels avec ou sans troubles associés", hebergement: true, sector: "enfant" },
+                    { name: "ITEP - Institut Thérapeutique, Éducatif et Pédagogique", description: "Accueil d'enfants présentant des difficultés psychologiques s'exprimant par des troubles du comportement", hebergement: true, sector: "enfant" },
+                    { name: "IEM - Institut d'Éducation Motrice", description: "Accueil d'enfants et adolescents présentant une déficience motrice", hebergement: true, sector: "enfant" },
+                    { name: "SESSAD - Service d'Éducation Spéciale et de Soins à Domicile", description: "Accompagnement des enfants handicapés dans leur environnement ordinaire", hebergement: false, sector: "enfant" },
+                    { name: "CAMSP - Centre d'Action Médico-Sociale Précoce", description: "Dépistage, cure ambulatoire et rééducation d'enfants de 0 à 6 ans présentant des déficits sensoriels, moteurs ou mentaux", hebergement: false, sector: "enfant" },
+                    { name: "CMPP - Centre Médico-Psycho-Pédagogique", description: "Consultations et soins ambulatoires pour enfants présentant des difficultés d'adaptation", hebergement: false, sector: "enfant" }
+                ],
+                adulte: [
+                    { name: "MAS - Maison d'Accueil Spécialisée (EAM)", description: "Hébergement permanent pour adultes polyhandicapés", hebergement: true, sector: "adulte", eam: true },
+                    { name: "FAM - Foyer d'Accueil Médicalisé (EAM)", description: "Accueil d'adultes handicapés avec accompagnement médical et paramédical", hebergement: true, sector: "adulte", eam: true },
+                    { name: "Foyer de Vie (EANM)", description: "Hébergement et animation pour adultes handicapés ne pouvant exercer d'activité professionnelle", hebergement: true, sector: "adulte", eanm: true },
+                    { name: "Foyer d'Hébergement (EANM)", description: "Hébergement des travailleurs handicapés exerçant une activité pendant la journée", hebergement: true, sector: "adulte", eanm: true },
+                    { name: "ESAT - Établissement et Service d'Aide par le Travail", description: "Activité professionnelle et soutien médico-social pour travailleurs handicapés", hebergement: false, sector: "adulte" },
+                    { name: "SAVS - Service d'Accompagnement à la Vie Sociale", description: "Accompagnement des personnes handicapées dans leur vie quotidienne", hebergement: false, sector: "adulte" },
+                    { name: "SAMSAH - Service d'Accompagnement Médico-Social pour Adultes Handicapés", description: "Accompagnement médico-social des personnes handicapées", hebergement: false, sector: "adulte", medicalise: true }
+                ],
+                santemantale: [
+                    { name: "HDJ - Hôpital de Jour", description: "Soins psychiatriques intensifs en ambulatoire", hebergement: false, sector: "adulte" },
+                    { name: "CATTP - Centre d'Accueil Thérapeutique à Temps Partiel", description: "Activités thérapeutiques et de réinsertion sociale", hebergement: false, sector: "adulte" },
+                    { name: "CMP - Centre Médico-Psychologique", description: "Consultations et soins ambulatoires en psychiatrie", hebergement: false, sector: "adulte" }
+                ],
+                addictologie: [
+                    { name: "CSAPA - Centre de Soins, d'Accompagnement et de Prévention en Addictologie", description: "Soins ambulatoires et accompagnement des personnes en difficulté avec les addictions", hebergement: false, sector: "adulte" },
+                    { name: "CAARUD - Centre d'Accueil et d'Accompagnement à la Réduction de Risques pour Usagers de Drogues", description: "Accueil inconditionnel et réduction des risques pour usagers de drogues", hebergement: false, sector: "adulte" },
+                    { name: "Appartement Thérapeutique", description: "Hébergement transitoire dans le cadre d'un projet thérapeutique", hebergement: true, sector: "adulte" },
+                    { name: "Centre de Post-Cure", description: "Accompagnement après sevrage pour consolidation du projet de soins", hebergement: false, sector: "adulte" },
+                    { name: "Consultation Jeunes Consommateurs", description: "Consultations spécialisées pour jeunes usagers de substances psychoactives", hebergement: false, sector: "enfant" }
+                ]
+            },
+            protection: {
+                prevention: [
+                    { name: "Service d'Aide à Domicile", description: "Intervention à domicile pour soutenir les familles en difficulté", hebergement: false, sector: "enfant" },
+                    { name: "PMI - Protection Maternelle et Infantile", description: "Service de protection de la santé de la mère et de l'enfant", hebergement: false, sector: "enfant" },
+                    { name: "Centre Social", description: "Animation et prévention sociale de proximité", hebergement: false, sector: "enfant" }
+                ],
+                placement: [
+                    { name: "MECS - Maison d'Enfants à Caractère Social", description: "Hébergement et accompagnement d'enfants et adolescents en difficulté", hebergement: true, sector: "enfant" },
+                    { name: "Foyer de l'Enfance", description: "Accueil d'urgence et observation d'enfants confiés à l'ASE", hebergement: true, sector: "enfant" },
+                    { name: "Village d'Enfants", description: "Accueil familial collectif dans des maisons individuelles", hebergement: true, sector: "enfant" },
+                    { name: "Service de Placement Familial", description: "Organisation et suivi du placement d'enfants en famille d'accueil", hebergement: true, sector: "enfant" },
+                    { name: "Service de Placement à Domicile", description: "Maintien de l'enfant au domicile avec accompagnement renforcé", hebergement: false, sector: "enfant" }
+                ],
+                accompagnement: [
+                    { name: "AEMO - Action Éducative en Milieu Ouvert", description: "Mesure judiciaire d'assistance éducative maintenant l'enfant dans son milieu familial", hebergement: false, sector: "enfant" },
+                    { name: "AED - Action Éducative à Domicile", description: "Mesure administrative d'aide éducative à domicile", hebergement: false, sector: "enfant" },
+                    { name: "SEAT - Service Éducatif d'Accompagnement et de Transition", description: "Accompagnement des jeunes majeurs sortant de placement", hebergement: false, sector: "enfant" }
+                ]
+            },
+            insertion: {
+                enfant: [
+                    { name: "Mission Locale", description: "Accompagnement des jeunes de 16 à 25 ans vers l'emploi et l'autonomie", hebergement: false, sector: "enfant" },
+                    { name: "PAIO - Permanence d'Accueil d'Information et d'Orientation", description: "Information et orientation des jeunes", hebergement: false, sector: "enfant" },
+                    { name: "FJT - Foyer de Jeunes Travailleurs", description: "Hébergement temporaire pour jeunes en insertion", hebergement: true, sector: "enfant" },
+                    { name: "Garantie Jeunes", description: "Accompagnement intensif des jeunes NEET vers l'emploi", hebergement: false, sector: "enfant" },
+                    { name: "EPIDE - Établissement pour l'Insertion dans l'Emploi", description: "Internat d'excellence pour jeunes en difficulté", hebergement: true, sector: "enfant" }
+                ],
+                adulte: [
+                    { name: "Pôle Emploi", description: "Service public de l'emploi", hebergement: false, sector: "adulte" },
+                    { name: "CHRS - Centre d'Hébergement et de Réinsertion Sociale", description: "Hébergement et accompagnement vers l'insertion sociale", hebergement: true, sector: "adulte" },
+                    { name: "CHU - Centre d'Hébergement d'Urgence", description: "Hébergement d'urgence pour personnes en détresse", hebergement: true, sector: "adulte" },
+                    { name: "SIAO - Service Intégré d'Accueil et d'Orientation", description: "Coordination de l'offre d'hébergement et de logement", hebergement: false, sector: "adulte" },
+                    { name: "CCAS - Centre Communal d'Action Sociale", description: "Action sociale de proximité", hebergement: false, sector: "adulte" },
+                    { name: "Entreprise d'Insertion", description: "Emploi et formation pour personnes en difficulté", hebergement: false, sector: "adulte" },
+                    { name: "Régie de Quartier", description: "Insertion par l'activité économique", hebergement: false, sector: "adulte" }
+                ]
+            }
+        };
+
+        let currentFilter = 'all';
+
+        function updateStructures(domain, sector) {
+            const resultsDiv = document.getElementById(`${domain}-results`);
+            
+            if (!sector) {
+                resultsDiv.innerHTML = '<div class="no-result">Sélectionnez un secteur pour voir les structures disponibles</div>';
+                resultsDiv.classList.remove('active');
+                return;
+            }
+
+            let structuresToShow = structures[domain][sector] || [];
+
+            if (structuresToShow.length === 0) {
+                resultsDiv.innerHTML = '<div class="no-result">Aucune structure ne correspond aux critères sélectionnés</div>';
+            } else {
+                resultsDiv.innerHTML = structuresToShow.map(structure => `
+                    <div class="structure-item">
+                        <div class="structure-name">${structure.name}</div>
+                        <div class="structure-description">${structure.description}</div>
+                        <div>
+                            <span class="age-badge ${structure.sector}">${structure.sector === 'enfant' ? 'Enfant/Jeune' : 'Adulte'}</span>
+                            ${structure.hebergement ? '<span class="hebergement-badge">🏠 Hébergement</span>' : ''}
+                            ${structure.eam ? '<span class="eam-badge">🏥 EAM</span>' : ''}
+                            ${structure.eanm ? '<span class="eanm-badge">🏛️ EANM</span>' : ''}
+                            ${structure.medicalise ? '<span class="medicalise-badge">⚕️ Médicalisé</span>' : ''}
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            resultsDiv.classList.add('active');
+        }
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Afficher un message d'accueil dans chaque section
+            document.querySelectorAll('[id$="-results"]').forEach(resultsDiv => {
+                resultsDiv.innerHTML = '<div class="no-result">Utilisez les menus déroulants ci-dessus pour explorer les structures disponibles</div>';
+            });
+        });
+    </script>
+</body>
+</html>
